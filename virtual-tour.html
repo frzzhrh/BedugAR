@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Tour - Situs Cibedug</title>
+
+    <!-- Memanggil ikon dari FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Memanggil file CSS eksternal -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Wadah utama Virtual Tour -->
+    <div class="virtual-tour-wrapper">
+
+        <!-- Tombol Kembali melayang di atas Panoee -->
+        <a href="index.html" class="btn-back-overlay">
+            <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <!-- Jendela Iframe Panoee -->
+        <!-- Ganti atribut src dengan link Virtual Tour Panoee Anda -->
+        <iframe src="https://tour.panoee.net/6aac9faacfc0ac5ebce1f730" allowfullscreen loading="lazy">
+        </iframe>
+
+    </div>
+
+    <!-- File Audio (Tersembunyi) -->
+    <audio id="bg-music" loop>
+        <source src="Angklung Buhun Baduy.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Tombol Pengendali Musik Melayang -->
+    <button id="music-btn" class="music-toggle">
+        <i class="fa-solid fa-volume-xmark" id="music-icon"></i>
+    </button>
+
+    <script>
+        const music = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("music-btn");
+        const musicIcon = document.getElementById("music-icon");
+
+        let isPlaying = false;
+
+        // Menurunkan volume sedikit agar tidak mengagetkan (0.0 sampai 1.0)
+        music.volume = 0.1;
+
+        musicBtn.addEventListener("click", function () {
+            if (isPlaying) {
+                music.pause();
+                // Ganti ikon menjadi muted
+                musicIcon.classList.remove("fa-music");
+                musicIcon.classList.add("fa-volume-xmark");
+            } else {
+                music.play();
+                // Ganti ikon menjadi nada musik
+                musicIcon.classList.remove("fa-volume-xmark");
+                musicIcon.classList.add("fa-music");
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+
+</body>
+
+</html>

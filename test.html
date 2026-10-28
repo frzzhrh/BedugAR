@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri AR Situs Cibedug</title>
+    <link rel="stylesheet" href="style-katalog.css">
+
+    <!-- Script Google Model-Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Tombol Kembali ke Panoee -->
+    <a href="javascript:history.back()" class="btn-close">&times; Tutup AR</a>
+
+    <!-- Tombol Kembali ke Beranda (Halaman Utama) -->
+    <a href="index.html" class="btn-home">
+        Kembali
+    </a>
+
+    <!-- Container Utama -->
+    <div class="app-container">
+
+        <!-- Area 3D Viewer -->
+        <model-viewer
+            id="ar-viewer"
+            src="paseuk.glb"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            ar-scale="auto"
+            alt="Model 3D peninggalan Situs Cibedug">
+
+            <button slot="ar-button" class="btn-ar">
+                Buka Kamera AR
+            </button>
+
+        </model-viewer>
+
+        <!-- Tombol Navigasi Kiri & Kanan -->
+        <button class="nav-btn nav-left" onclick="gantiBatu(-1)">&#10094;</button>
+        <button class="nav-btn nav-right" onclick="gantiBatu(1)">&#10095;</button>
+
+        <!-- Panel Informasi di Bawah -->
+        <div class="info-panel">
+            <div class="indicator" id="batu-indicator">1 / 7</div>
+            <h2 id="batu-title">Batu Pasuek</h2>
+            <p id="batu-desc">Batu peninggalan megalitik dengan bentuk khas berlubang. Putar objek di layar untuk melihat detail.</p>
+        </div>
+
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT UNTUK MENGGANTI BATU -->
+    <script>
+        // 1. Database Sederhana (Daftar 7 Batu)
+        const dataBatu = [
+            {
+                nama: "Batu Pasuek",
+                fileGlb: "paseuk.glb",
+                deskripsi: "Batu peninggalan megalitik dengan bentuk khas berlubang. Putar objek di layar untuk melihat detail."
+            },
+            {
+                nama: "Batu Kursi",
+                fileGlb: "kursi.glb",
+                deskripsi: "Batu yang menyerupai tempat duduk, diyakini sebagai tempat pemujaan atau singgasana."
+            },
+            {
+                nama: "Batu Bedug",
+                fileGlb: "bedug.glb",
+                deskripsi: "Batu dengan permukaan datar yang menyerupai tempat berbaring peninggalan leluhur."
+            },
+            {
+                nama: "Batu Sajadah",
+                fileGlb: "sejadah.glb",
+                deskripsi: "Formasi batu yang diasosiasikan dengan kendaraan zaman dahulu."
+            },
+            {
+                nama: "Batu Kesucian",
+                fileGlb: "Kesucian.glb",
+                deskripsi: "Batu ikonik berbentuk tabung yang menjadi asal mula penamaan Situs Cibedug."
+            },
+            {
+                nama: "Sumur",
+                fileGlb: "sumur.glb",
+                deskripsi: "Batu tegak peninggalan leluhur yang berdiri kokoh di area situs."
+            },
+            {
+                nama: "Pelataran",
+                fileGlb: "pelataran.glb",
+                deskripsi: "Batu tegak pendamping di area teras berundak Situs Cibedug."
+            }
+        ];
+
+        let indexSaatIni = 0;
+
+        // 2. Fungsi untuk mengganti model batu
+        function gantiBatu(arah) {
+            indexSaatIni = indexSaatIni + arah;
+
+            if (indexSaatIni >= dataBatu.length) {
+                indexSaatIni = 0;
+            } else if (indexSaatIni < 0) {
+                indexSaatIni = dataBatu.length - 1;
+            }
+
+            const batuBaru = dataBatu[indexSaatIni];
+
+            document.getElementById("batu-title").innerText = batuBaru.nama;
+            document.getElementById("batu-desc").innerText = batuBaru.deskripsi;
+            document.getElementById("batu-indicator").innerText = (indexSaatIni + 1) + " / " + dataBatu.length;
+
+            const viewer = document.getElementById("ar-viewer");
+            viewer.src = batuBaru.fileGlb;
+
+            if (batuBaru.fileUsdz) {
+                viewer.setAttribute("ios-src", batuBaru.fileUsdz);
+            } else {
+                viewer.removeAttribute("ios-src");
+            }
+        }
+
+        gantiBatu(0);
+    </script>
+
+</body>
+
+</html>
